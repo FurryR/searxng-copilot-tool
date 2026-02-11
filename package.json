@@ -1,0 +1,103 @@
+{
+  "name": "searxng-copilot-tool",
+  "publisher": "FurryR",
+  "displayName": "SearXNG Copilot Tool",
+  "description": "Copilot tool for SearXNG JSON search",
+  "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/FurryR/searxng-copilot-tool.git"
+  },
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "enabledApiProposals": [
+    "languageModelToolsForAgent"
+  ],
+  "categories": [
+    "AI",
+    "Chat",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguageModelTool:searxng_search"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languageModelTools": [
+      {
+        "name": "searxng_search",
+        "displayName": "SearXNG Search",
+        "userDescription": "Search the web using your configured SearXNG instance.",
+        "modelDescription": "Use this tool to search the web through SearXNG and return top results.",
+        "toolReferenceName": "searxng_search",
+        "canBeReferencedInPrompt": true,
+        "icon": "globe",
+        "tags": [
+          "web",
+          "search",
+          "searxng",
+          "language-model-tools"
+        ],
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Search query"
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "SearXNG Copilot Tool",
+      "properties": {
+        "searxngCopilotTool.endpoint": {
+          "type": "string",
+          "default": "",
+          "description": "SearXNG JSON API endpoint URL (your instance /search endpoint)."
+        },
+        "searxngCopilotTool.token": {
+          "type": "string",
+          "default": "",
+          "description": "SearXNG API token sent as an X-API-Key header."
+        },
+        "searxngCopilotTool.scoreThreshold": {
+          "type": "number",
+          "default": 0.5,
+          "description": "Minimum score required to include a result. Set to 0 to include all results.",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "package": "vsce package",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.109.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "25.x",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "eslint": "^10.0.0",
+    "glob": "^13.0.2",
+    "mocha": "^11.7.5",
+    "typescript": "^5.9.3",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.7.1"
+  }
+}
